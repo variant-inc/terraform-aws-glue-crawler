@@ -196,8 +196,7 @@ Default:
 ### `main.tf`
 ```terraform
 module "aws_crawler" {
-  #source = "github.com/variant-inc/terraform-aws-glue-crawler?ref=v1"
-  source = "../../modules/terraform-aws-glue-crawler"
+  source = "github.com/variant-inc/terraform-aws-glue-crawler?ref=v1"
 
   name          = var.name
   database_name = var.database_name
