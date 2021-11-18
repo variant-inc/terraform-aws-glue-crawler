@@ -3,22 +3,22 @@
 - [Terraform Glue Crawler module](#terraform-glue-crawler-module)
   - [Input Variables](#input-variables)
   - [Variable definitions](#variable-definitions)
-      - [name](#name)
-      - [database_name](#database_name)
-      - [role](#role)
-      - [s3_target](#s3_target)
-      - [classifiers](#classifiers)
-      - [configuration](#configuration)
-      - [schedule](#schedule)
-      - [schema_change_policy](#schema_change_policy)
-      - [lineage_configuration](#lineage_configuration)
-      - [recrawl_behavior](#recrawl_behavior)
+    - [name](#name)
+    - [database_name](#database_name)
+    - [role](#role)
+    - [s3_target](#s3_target)
+    - [classifiers](#classifiers)
+    - [configuration](#configuration)
+    - [schedule](#schedule)
+    - [schema_change_policy](#schema_change_policy)
+    - [lineage_configuration](#lineage_configuration)
+    - [recrawl_behavior](#recrawl_behavior)
   - [Examples](#examples)
-      - [`main.tf`](#maintf)
-      - [`terraform.tfvars.json`](#terraformtfvarsjson)
-      - [`provider.tf`](#providertf)
-      - [`variables.tf`](#variablestf)
-      - [`outputs.tf`](#outputstf)
+    - [`main.tf`](#maintf)
+    - [`terraform.tfvars.json`](#terraformtfvarsjson)
+    - [`provider.tf`](#providertf)
+    - [`variables.tf`](#variablestf)
+    - [`outputs.tf`](#outputstf)
 
 ## Input Variables
 | Name     | Type    | Default   | Example     | Notes   |
@@ -28,27 +28,27 @@
 | role | string | "" | "arn:aws:iam::648462982672:role/service-role/AWSGlueServiceRole-test-role" |  |
 | s3_target | list(any) | [] | `see below` |  |
 | classifiers | list(string) | null | ["test-clasifier"] |  |
-| configuration | any | {} | `see below` | https://docs.aws.amazon.com/glue/latest/dg/crawler-configuration.html |
-| schedule | string | "cron(45 13 * * ? *)" | "cron(45 13 * * ? *)" |  |
+| configuration | any | {} | `see below` | <https://docs.aws.amazon.com/glue/latest/dg/crawler-configuration.html> |
+| schedule | string | `"cron(45 13 * * ? *)"` | `"cron(45 13 * * ? *)"` |  |
 | schema_change_policy | object | `see below` | `see below` |  |
 | lineage_configuration | bool | false | "DISABLE" |  |
 | recrawl_behavior | string | null | `see below` |  |
 
 ## Variable definitions
 
-#### name
+### name
 Sets name for Glue Crawler.
 ```json
 "name": "<crawler name>"
 ```
 
-#### database_name
+### database_name
 Database where results should be stored.
 ```json
 "database_name": "<database name>"
 ```
 
-#### role
+### role
 Specifiy existing role ARN to be used with Glue Crawler.
 Ommit if you want to create new role automatically.
 ```json
@@ -60,7 +60,7 @@ Default:
 "role": ""
 ```
 
-#### s3_target
+### s3_target
 List that specifys all parameters needed for each S3 target path.
 ```json
 "s3_target": [
@@ -89,7 +89,7 @@ Default:
 ]
 ```
 
-#### classifiers
+### classifiers
 List of custom clasifiers that are going to be used for this Crawler.
 ```json
 "classifiers": ["<list of clasifiers>"]
@@ -100,10 +100,10 @@ Default:
 "classifiers": null
 ```
 
-#### configuration
+### configuration
 JSON configuration for Glue Crawler.
 Anything defined in variable merges with defaults and overrides only that config property, not others.
-More info on each option https://docs.aws.amazon.com/glue/latest/dg/crawler-configuration.html
+More info on each option <https://docs.aws.amazon.com/glue/latest/dg/crawler-configuration.html>
 ```json
 "configuration": {
   "Version" : 1.0,
@@ -141,9 +141,9 @@ Default:
 }
 ```
 
-#### schedule
+### schedule
 Cron expression for scheduled crawls.
-https://docs.aws.amazon.com/glue/latest/dg/monitor-data-warehouse-schedule.html
+<https://docs.aws.amazon.com/glue/latest/dg/monitor-data-warehouse-schedule.html>
 ```json
 "schedule": "<cron(Minutes Hours Day-of-month Month Day-of-week Year)>"
 ```
@@ -153,7 +153,7 @@ Default:
 "schedule": "cron(45 13 * * ? *)"
 ```
 
-#### schema_change_policy
+### schema_change_policy
 Policy controlling schema changes. By default overriden with settings in configuration block but can be changed if needed.
 ```json
 "schema_change_policy": {
@@ -170,7 +170,7 @@ Default:
 }
 ```
 
-#### lineage_configuration
+### lineage_configuration
 Specifies whether data lineage is enabled for the crawler.
 ```json
 "lineage_configuration": <true or false>
@@ -181,7 +181,7 @@ Default:
 "lineage_configuration": false
 ```
 
-#### recrawl_behavior
+### recrawl_behavior
 Specifies whether to crawl the entire dataset again or to crawl only folders that were added since the last crawler run.
 ```json
 "recrawl_behavior": "<CRAWL_EVERYTHING or CRAWL_NEW_FOLDERS_ONLY. Default value is CRAWL_EVERYTHING>"
@@ -193,7 +193,7 @@ Default:
 ```
 
 ## Examples
-#### `main.tf`
+### `main.tf`
 ```terraform
 module "aws_crawler" {
   #source = "github.com/variant-inc/terraform-aws-glue-crawler?ref=v1"
@@ -214,7 +214,7 @@ module "aws_crawler" {
 }
 ```
 
-#### `terraform.tfvars.json`
+### `terraform.tfvars.json`
 ```json
 {
   "name": "test-crawler-1",
@@ -257,7 +257,6 @@ module "aws_crawler" {
 ```
 
 Basic
-#####
 ```json
 {
   "name": "test-crawler-1",
@@ -270,7 +269,7 @@ Basic
 }
 ```
 
-#### `provider.tf`
+### `provider.tf`
 ```terraform
 provider "aws" {
   region = "us-east-1"
@@ -284,10 +283,10 @@ provider "aws" {
 }
 ```
 
-#### `variables.tf`
+### `variables.tf`
 copy ones from module
 
-#### `outputs.tf`
+### `outputs.tf`
 ```terraform
 output "crawler_name" {
   value       = module.aws_crawler.crawler_name

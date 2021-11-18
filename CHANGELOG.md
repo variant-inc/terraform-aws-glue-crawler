@@ -1,2 +1,3 @@
-# v1
+# Changelog
+* v1
   * Initial commit
