@@ -5,6 +5,8 @@
   - [Variable definitions](#variable-definitions)
     - [name](#name)
     - [database_name](#database_name)
+    - [create_role](#create_role)
+    - [policy](#policy)
     - [role](#role)
     - [s3_target](#s3_target)
     - [classifiers](#classifiers)
@@ -25,6 +27,8 @@
 | ---------- | --------- | ------------| --------------- | --------- |
 | name | string |  | "test-crawler" |  |
 | database_name | string |  | "test-crawler-db" |  |
+| create_role | bool | true | false |  |
+| policy | list(any) | [] | `see below` |  |
 | role | string | "" | "arn:aws:iam::648462982672:role/service-role/AWSGlueServiceRole-test-role" |  |
 | s3_target | list(any) | [] | `see below` |  |
 | classifiers | list(string) | null | ["test-clasifier"] |  |
@@ -48,11 +52,35 @@ Database where results should be stored.
 "database_name": "<database name>"
 ```
 
-### role
-Specifiy existing role ARN to be used with Glue Crawler.
-Ommit if you want to create new role automatically.
+### create_role
+Specifies if IAM role for the Glue Crawler will be created in module or externally.
+`true` - created with module
+`false` - created externally
 ```json
-"role": "<ARN of existing role>"
+"create_role": <true or false>
+```
+
+Default:
+```json
+"create_role": true
+```
+
+### policy
+Additional inline policy statements for Glue Crawler role.
+Effective only if `create_role` is set to `true`.
+```json
+"policy": [<list of inline policies>]
+```
+
+Default:
+```json
+"policy": []
+```
+
+### role
+ARN of externally created role. Use in case of `create_role` is set to `false`.
+```json
+"role": "<role ARN>"
 ```
 
 Default:

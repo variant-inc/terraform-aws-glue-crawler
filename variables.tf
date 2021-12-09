@@ -8,8 +8,20 @@ variable "database_name" {
   type        = string
 }
 
+variable "create_role" {
+  description = "Specifies should role be created with module or will there be external one provided."
+  type        = bool
+  default     = true
+}
+
+variable "policy" {
+  description = "List of additional policies for Glue Crawler role."
+  type        = list(any)
+  default     = []
+}
+
 variable "role" {
-  description = "ARN of existing role used for Glue crawler. If not specified new one is created"
+  description = "Custom role ARN used for Glue Crawler."
   type        = string
   default     = ""
 }

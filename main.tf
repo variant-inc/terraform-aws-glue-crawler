@@ -7,8 +7,7 @@ data "aws_caller_identity" "current" {}
 resource "aws_glue_crawler" "crawler" {
   name          = var.name
   database_name = var.database_name
-  #fixed role name: role = length(var.role) == 0 ? format("arn:aws:iam::%s:role/service-role/%s", data.aws_caller_identity.current.account_id, format("AWSGlueServiceRole-%s", var.name)) : var.role
-  role = length(var.role) == 0 ? aws_iam_role.crawler_role[0].arn : var.role
+  role = var.create_role ? aws_iam_role.role[0].arn : var.role
 
   dynamic "s3_target" {
     for_each = var.s3_target
@@ -59,8 +58,8 @@ resource "aws_glue_crawler" "crawler" {
   }
 }
 
-resource "aws_iam_role" "crawler_role" {
-  count = length(var.role) == 0 ? 1 : 0
+resource "aws_iam_role" "role" {
+  count = var.create_role ? 1 : 0
   name  = format("AWSGlueServiceRole-%s", var.name)
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -92,5 +91,14 @@ resource "aws_iam_role" "crawler_role" {
         }
       ]
     })
+  }
+
+  dynamic "inline_policy" {
+    for_each = var.policy
+
+    content {
+      name   = lookup(inline_policy.value, "name", "")
+      policy = jsonecode(lookup(inline_policy.value, "policy", {}))
+    }
   }
 }
