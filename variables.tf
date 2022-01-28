@@ -3,6 +3,12 @@ variable "name" {
   type        = string
 }
 
+variable "tags" {
+  type        = map(string)
+  description = "Tags for S3 bucket"
+  default     = {}
+}
+
 variable "database_name" {
   description = "Name of the Database where results from crawler will be stored"
   type        = string

@@ -6,6 +6,7 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_glue_crawler" "crawler" {
   name          = var.name
+  tags          = var.tags
   database_name = var.database_name
   role = var.create_role ? aws_iam_role.role[0].arn : var.role
 
@@ -61,6 +62,7 @@ resource "aws_glue_crawler" "crawler" {
 resource "aws_iam_role" "role" {
   count = var.create_role ? 1 : 0
   name  = format("AWSGlueServiceRole-%s", var.name)
+  tags  = var.tags
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [

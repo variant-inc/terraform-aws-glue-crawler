@@ -4,6 +4,7 @@
   - [Input Variables](#input-variables)
   - [Variable definitions](#variable-definitions)
     - [name](#name)
+    - [tags](#tags)
     - [database_name](#database_name)
     - [create_role](#create_role)
     - [policy](#policy)
@@ -26,6 +27,7 @@
 | Name     | Type    | Default   | Example     | Notes   |
 | ---------- | --------- | ------------| --------------- | --------- |
 | name | string |  | "test-crawler" |  |
+| tags | map(string) | {} | {"environment": "prod"} | |
 | database_name | string |  | "test-crawler-db" |  |
 | create_role | bool | true | false |  |
 | policy | list(any) | [] | `see below` |  |
@@ -45,6 +47,18 @@ Sets name for Glue Crawler.
 ```json
 "name": "<crawler name>"
 ```
+
+### tags
+Tags for created bucket.
+```json
+"tags": {<map of tag keys and values>}
+```
+
+Default:
+```json
+"tags": {}
+```
+
 
 ### database_name
 Database where results should be stored.
@@ -227,6 +241,7 @@ module "aws_crawler" {
   source = "github.com/variant-inc/terraform-aws-glue-crawler?ref=v1"
 
   name          = var.name
+  tags          = var.tags
   database_name = var.database_name
   role          = var.role
 
@@ -245,6 +260,9 @@ module "aws_crawler" {
 ```json
 {
   "name": "test-crawler-1",
+  "tags": {
+    "environment": "prod"
+  },
   "database_name": "test-crawler-db",
   "role": "arn:aws:iam::319244236588:role/service-role/AWSGlueServiceRole-test-crawler-1",
   "s3_target": [
