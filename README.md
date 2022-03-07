@@ -8,6 +8,7 @@
     - [database_name](#database_name)
     - [create_role](#create_role)
     - [policy](#policy)
+    - [managed_policies](#managed_policies)
     - [role](#role)
     - [s3_target](#s3_target)
     - [classifiers](#classifiers)
@@ -31,6 +32,7 @@
 | database_name | string |  | "test-crawler-db" |  |
 | create_role | bool | true | false |  |
 | policy | list(any) | [] | `see below` |  |
+| managed_policies | list(string) | [] | `see below` |  |
 | role | string | "" | "arn:aws:iam::648462982672:role/service-role/AWSGlueServiceRole-test-role" |  |
 | s3_target | list(any) | [] | `see below` |  |
 | classifiers | list(string) | null | ["test-clasifier"] |  |
@@ -89,6 +91,18 @@ Effective only if `create_role` is set to `true`.
 Default:
 ```json
 "policy": []
+```
+
+### managed_policies
+Additional managed policies which should be attached to auto-created role.
+Effective only if `create_role` is set to `true`.
+```json
+"managed_policies": [<list of managed policies>]
+```
+
+Default:
+```json
+"managed_policies": []
 ```
 
 ### role
@@ -243,7 +257,11 @@ module "aws_crawler" {
   name          = var.name
   tags          = var.tags
   database_name = var.database_name
-  role          = var.role
+
+  create_role      = var.create_role
+  policy           = var.policy
+  managed_policies = var.managed_policies
+  role             = var.role
 
   s3_target   = var.s3_target
   classifiers = var.classifiers
@@ -263,6 +281,9 @@ module "aws_crawler" {
   "tags": {
     "environment": "prod"
   },
+  "managed_policies": [
+    "arn:aws:iam::319244236588:policy/example-managed-policy"
+  ],
   "database_name": "test-crawler-db",
   "role": "arn:aws:iam::319244236588:role/service-role/AWSGlueServiceRole-test-crawler-1",
   "s3_target": [

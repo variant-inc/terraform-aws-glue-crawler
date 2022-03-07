@@ -76,7 +76,12 @@ resource "aws_iam_role" "role" {
     ]
   })
 
-  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"]
+  managed_policy_arns = concat(
+    [
+      "arn:aws:iam::aws:policy/service-role/AWSGlueServiceRole"
+    ],
+    var.managed_policies
+  )
 
   inline_policy {
     name = "replication-policy"
