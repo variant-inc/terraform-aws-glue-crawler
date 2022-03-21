@@ -105,7 +105,7 @@ resource "aws_iam_role" "role" {
 
     content {
       name   = lookup(inline_policy.value, "name", "")
-      policy = jsonecode(lookup(inline_policy.value, "policy", {}))
+      policy = jsonencode(lookup(inline_policy.value, "policy", {}))
     }
   }
 }
